@@ -172,6 +172,8 @@ Se incluye una colección completa de Postman para probar todos los endpoints de
 ## 📝 Ejemplos de Uso
 
 ### Crear una Nota
+**POST** `/api/notes`
+
 ```http
 POST http://localhost:8080/api/notes
 Content-Type: application/json
@@ -182,17 +184,35 @@ Content-Type: application/json
 }
 ```
 
+![Ejemplo POST](assets/post.png)
+
+---
+
 ### Obtener Todas las Notas
+**GET** `/api/notes`
+
 ```http
 GET http://localhost:8080/api/notes
 ```
 
+![Ejemplo GET All](assets/getAll.png)
+
+---
+
 ### Obtener una Nota por ID
+**GET** `/api/notes/{id}`
+
 ```http
 GET http://localhost:8080/api/notes/1
 ```
 
+![Ejemplo GET By ID](assets/getById.png)
+
+---
+
 ### Actualizar una Nota
+**PUT** `/api/notes/{id}`
+
 ```http
 PUT http://localhost:8080/api/notes/1
 Content-Type: application/json
@@ -203,10 +223,25 @@ Content-Type: application/json
 }
 ```
 
+![Ejemplo PUT](assets/put.png)
+
+---
+
 ### Eliminar una Nota
+**DELETE** `/api/notes/{id}`
+
 ```http
 DELETE http://localhost:8080/api/notes/1
 ```
+
+![Ejemplo DELETE](assets/delete.png)
+
+---
+
+### Error: Nota No Encontrada
+Si intentas obtener, actualizar o eliminar una nota que no existe, recibirás un error 404:
+
+![Error Nota No Encontrada](assets/noteNotFound.png)
 
 ---
 
