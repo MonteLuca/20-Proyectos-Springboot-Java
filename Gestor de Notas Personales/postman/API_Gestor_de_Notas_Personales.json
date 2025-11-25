@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "faeab8de-3f8c-49bb-a3bf-edc21fabea0f",
+		"name": "📝 API Gestor de Notas Personales",
+		"description": "## Información General\n\n**Base URL:** `http://localhost:8080`  \n**Puerto:** `8080`  \n**Context Path:** `/api/notes`\n\n---\n\n## 📋 Endpoints\n\n### 1\\. Crear una nueva nota\n\n**POST** `/api/notes`\n\n**Descripción:** Crea una nueva nota en el sistema.\n\n**Headers:**\n\n```\nContent-Type: application/json\n\n ```\n\n**Body (raw JSON):**\n\n``` json\n{\n  \"title\": \"Primera nota\",\n  \"content\": \"Estoy probando en crear mi primera nota\"\n}\n\n ```\n\n**Validaciones:**\n\n- `title`: Obligatorio, máximo 255 caracteres\n    \n- `content`: Obligatorio, máximo 1000 caracteres\n    \n\n**Respuesta Exitosa (201 Created):**\n\n``` json\n{\n  \"id\": 1,\n  \"title\": \"Primera nota\",\n  \"content\": \"Estoy probando en crear mi primera nota\",\n  \"createdAt\": \"2025-11-25T12:34:04\",\n  \"lastModified\": \"2025-11-25T12:34:04\"\n}\n\n ```\n\n**Errores posibles:**\n\n- `400 Bad Request`: Error de validación\n    \n    ``` json\n        {\n          \"timestamp\": \"2025-11-25T12:34:04\",\n          \"status\": 400,\n          \"error\": \"Bad Request\",\n          \"message\": \"Error de validación en los datos enviados\",\n          \"path\": \"/api/notes\",\n          \"validationErrors\": {\n            \"title\": \"El nombre es obligatorio\",\n            \"content\": \"El contenido es obligatorio\"\n          }\n        }\n    \n     ```\n    \n\n---\n\n### 2\\. Obtener todas las notas\n\n**GET** `/api/notes`\n\n**Descripción:** Obtiene todas las notas almacenadas en el sistema.\n\n**Headers:** No requiere headers especiales\n\n**Respuesta Exitosa (200 OK):**\n\n``` json\n[\n  {\n    \"id\": 1,\n    \"title\": \"Primera nota\",\n    \"content\": \"Estoy probando en crear mi primera nota\",\n    \"createdAt\": \"2025-11-25T12:34:04\",\n    \"lastModified\": \"2025-11-25T12:34:04\"\n  },\n  {\n    \"id\": 2,\n    \"title\": \"Segunda nota\",\n    \"content\": \"Contenido de la segunda nota\",\n    \"createdAt\": \"2025-11-25T12:35:10\",\n    \"lastModified\": \"2025-11-25T12:35:10\"\n  }\n]\n\n ```\n\n**Nota:** Si no hay notas, retorna un array vacío `[]`\n\n---\n\n### 3\\. Obtener una nota por ID\n\n**GET** `/api/notes/{id}`\n\n**Descripción:** Obtiene una nota específica por su ID.\n\n**Parámetros de URL:**\n\n- `id` (Long): ID de la nota a buscar\n    \n\n**Ejemplo:** `GET /api/notes/1`\n\n**Respuesta Exitosa (200 OK):**\n\n``` json\n{\n  \"id\": 1,\n  \"title\": \"Primera nota\",\n  \"content\": \"Estoy probando en crear mi primera nota\",\n  \"createdAt\": \"2025-11-25T12:34:04\",\n  \"lastModified\": \"2025-11-25T12:34:04\"\n}\n\n ```\n\n**Errores posibles:**\n\n- `404 Not Found`: Nota no encontrada\n    \n    ``` json\n        {\n          \"timestamp\": \"2025-11-25T12:34:04\",\n          \"status\": 404,\n          \"error\": \"Not Found\",\n          \"message\": \"Nota con ID 999 no encontrada\",\n          \"path\": \"/api/notes/999\"\n        }\n    \n     ```\n    \n\n---\n\n### 4\\. Actualizar una nota\n\n**PUT** `/api/notes/{id}`\n\n**Descripción:** Actualiza una nota existente por su ID.\n\n**Parámetros de URL:**\n\n- `id` (Long): ID de la nota a actualizar\n    \n\n**Headers:**\n\n```\nContent-Type: application/json\n\n ```\n\n**Body (raw JSON):**\n\n``` json\n{\n  \"title\": \"Nota actualizada\",\n  \"content\": \"Este es el contenido actualizado de la nota\"\n}\n\n ```\n\n**Validaciones:**\n\n- `title`: Obligatorio, máximo 255 caracteres\n    \n- `content`: Obligatorio, máximo 1000 caracteres\n    \n\n**Ejemplo:** `PUT /api/notes/1`\n\n**Respuesta Exitosa (200 OK):**\n\n``` json\n{\n  \"id\": 1,\n  \"title\": \"Nota actualizada\",\n  \"content\": \"Este es el contenido actualizado de la nota\",\n  \"createdAt\": \"2025-11-25T12:34:04\",\n  \"lastModified\": \"2025-11-25T12:40:15\"\n}\n\n ```\n\n**Errores posibles:**\n\n- `400 Bad Request`: Error de validación\n    \n- `404 Not Found`: Nota no encontrada\n    \n\n---\n\n### 5\\. Eliminar una nota\n\n**DELETE** `/api/notes/{id}`\n\n**Descripción:** Elimina una nota por su ID.\n\n**Parámetros de URL:**\n\n- `id` (Long): ID de la nota a eliminar\n    \n\n**Ejemplo:** `DELETE /api/notes/1`\n\n**Respuesta Exitosa (204 No Content):**  \nSin cuerpo de respuesta\n\n**Errores posibles:**\n\n- `404 Not Found`: Nota no encontrada\n    \n    ``` json\n        {\n          \"timestamp\": \"2025-11-25T12:34:04\",\n          \"status\": 404,\n          \"error\": \"Not Found\",\n          \"message\": \"Nota con ID 999 no encontrada\",\n          \"path\": \"/api/notes/999\"\n        }\n    \n     ```\n    \n\n---\n\n## 🔧 Configuración en Postman\n\n### Variables de Entorno (Recomendado)\n\nCrea un entorno en Postman con las siguientes variables:\n\n| Variable | Valor Inicial | Descripción |\n| --- | --- | --- |\n| `base_url` | `http://localhost:8080` | URL base del servidor |\n| `api_path` | `/api/notes` | Ruta base de la API |\n\n**Uso en requests:**\n\n- URL completa: `{{base_url}}{{api_path}}`\n    \n- Para obtener por ID: `{{base_url}}{{api_path}}/1`\n    \n\n---\n\n## 📝 Ejemplos de Requests Completos\n\n### Crear Nota\n\n```\nPOST http://localhost:8080/api/notes\nContent-Type: application/json\n{\n  \"title\": \"Mi primera nota\",\n  \"content\": \"Este es el contenido de mi primera nota\"\n}\n\n ```\n\n### Obtener Todas las Notas\n\n```\nGET http://localhost:8080/api/notes\n\n ```\n\n### Obtener Nota por ID\n\n```\nGET http://localhost:8080/api/notes/1\n\n ```\n\n### Actualizar Nota\n\n```\nPUT http://localhost:8080/api/notes/1\nContent-Type: application/json\n{\n  \"title\": \"Título actualizado\",\n  \"content\": \"Contenido actualizado\"\n}\n\n ```\n\n### Eliminar Nota\n\n```\nDELETE http://localhost:8080/api/notes/1\n\n ```\n\n---\n\n## ⚠️ Notas Importantes\n\n1. **Campos generados automáticamente:**\n    \n    - `id`: Se genera automáticamente al crear (no enviar en POST)\n        \n    - `createdAt`: Se genera automáticamente al crear (no enviar)\n        \n    - `lastModified`: Se actualiza automáticamente (no enviar)\n        \n2. **Validaciones:**\n    \n    - El `title` y `content` son obligatorios\n        \n    - El `title` tiene un máximo de 255 caracteres\n        \n    - El `content` tiene un máximo de 1000 caracteres\n        \n3. **Códigos de Estado HTTP:**\n    \n    - `200 OK`: Operación exitosa (GET, PUT)\n        \n    - `201 Created`: Recurso creado exitosamente (POST)\n        \n    - `204 No Content`: Recurso eliminado exitosamente (DELETE)\n        \n    - `400 Bad Request`: Error de validación\n        \n    - `404 Not Found`: Recurso no encontrado\n        \n    - `500 Internal Server Error`: Error interno del servidor\n        \n\n---\n\n## 📌 Requisitos Previos\n\nAntes de usar la API, asegúrate de:\n\n1. ✅ Tener MySQL corriendo en `localhost:3306`\n    \n2. ✅ Tener la base de datos `notas` creada (se crea automáticamente si no existe)\n    \n3. ✅ Tener las credenciales correctas configuradas (`root`/`root` por defecto)\n    \n4. ✅ Tener la aplicación Spring Boot corriendo en el puerto `8080`\n    \n\n---\n\n## 🔍 Troubleshooting\n\n### Error 500 Internal Server Error\n\n- Verifica que MySQL esté corriendo\n    \n- Verifica que la base de datos exista o pueda crearse\n    \n- Revisa los logs de la aplicación para más detalles\n    \n\n### Error 400 Bad Request\n\n- Verifica que el body JSON esté correctamente formateado\n    \n- Asegúrate de incluir los campos obligatorios: `title` y `content`\n    \n- Verifica que los campos no excedan los límites de caracteres\n    \n\n### Error 404 Not Found\n\n- Verifica que el ID de la nota exista en la base de datos\n    \n- Usa el endpoint GET `/api/notes` para listar todas las notas disponibles",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33377290"
+	},
+	"item": [
+		{
+			"name": "Crear Nota",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"Titulo\",\n    \"content\": \"Contenido\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{api_path}}",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar todas las notas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar nota por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Nota",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Nota actualizada\",\n  \"content\": \"Este es el contenido actualizado de la nota\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Nota",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "api_path",
+			"value": "/api/notes",
+			"type": "string"
+		}
+	]
+}
+
