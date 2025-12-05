@@ -25,7 +25,7 @@ Este desafío está formado por **20 proyectos progresivos** que cubren diferent
 - **Descripción**: CRUD completo de notas personales con validaciones y manejo de excepciones
 - **Tecnologías**: Spring Boot, JPA, MySQL, Lombok
 - **Ubicación**: [`notes/`](./notes/)
-- **Documentación**: Ver [README del proyecto](Gestor de Notas Personales/README.md)
+- **Documentación**: Ver [README del proyecto](Gestor%20de%20Notas%20Personales/README.md)
 
 ---
 
