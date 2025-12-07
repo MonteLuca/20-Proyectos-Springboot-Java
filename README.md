@@ -24,8 +24,15 @@ Este desafío está formado por **20 proyectos progresivos** que cubren diferent
 - **Estado**: ✅ Completado
 - **Descripción**: CRUD completo de notas personales con validaciones y manejo de excepciones
 - **Tecnologías**: Spring Boot, JPA, MySQL, Lombok
-- **Ubicación**: [`notes/`](./notes/)
-- **Documentación**: Ver [README del proyecto](Gestor%20de%20Notas%20Personales/README.md)
+- **Ubicación**: [`Gestor de Notas Personales/`](./Gestor%20de%20Notas%20Personales/)
+- **Documentación**: Ver [README del proyecto](./Gestor%20de%20Notas%20Personales/README.md)
+
+### Proyecto 2: Gestor de Tareas ✅
+- **Estado**: ✅ Completado
+- **Descripción**: CRUD completo de creación y gestión de tareas con filtros avanzados y búsquedas
+- **Tecnologías**: Spring Boot, JPA, MySQL, Lombok
+- **Ubicación**: [`Gestor de tareas/`](./Gestor%20de%20tareas/)
+- **Documentación**: Ver [README del proyecto](./Gestor%20de%20tareas/README.md)
 
 ---
 
@@ -34,12 +41,12 @@ Este desafío está formado por **20 proyectos progresivos** que cubren diferent
 | # | Proyecto | Estado | Descripción |
 |---|----------|--------|-------------|
 | 1 | Gestor de Notas Personales | ✅ Completado | CRUD básico con validaciones |
-| 2 | - | ⏳ Pendiente | - |
+| 2 | Gestor de Tareas | ✅ Completado | CRUD básico con validaciones |
 | 3 | - | ⏳ Pendiente | - |
 | ... | ... | ... | ... |
 | 20 | - | ⏳ Pendiente | - |
 
-**Progreso general**: 1/20 proyectos completados (5%)
+**Progreso general**: 2/20 proyectos completados (10%)
 
 ---
 

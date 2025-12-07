@@ -1,0 +1,586 @@
+{
+	"info": {
+		"_postman_id": "5afbd7df-27c7-4f9f-8ef6-bbbf3c560b5f",
+		"name": "📝 API Creador de Tareas",
+		"description": "# 📚 Documentación API - Gestor de Tareas\n\n## Información General\n\n**Base URL:** `http://localhost:8080`  \n\n**Puerto:** `8080`  \n\n**Context Path:** `/api/tasks`\n\n---\n\n## 📋 Endpoints\n\n### 1. Crear una nueva tarea\n\n**POST** `/api/tasks`\n\n**Descripción:** Crea una nueva tarea en el sistema.\n\n**Headers:**\n\n```\nContent-Type: application/json\n```\n\n**Body (raw JSON):**\n\n```json\n{\n  \"title\": \"Estudiar Spring Boot\",\n  \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n  \"status\": \"PENDING\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-22\"\n}\n```\n\n**Validaciones:**\n\n- `title`: Obligatorio, entre 3-100 caracteres\n- `description`: Opcional, máximo 500 caracteres\n- `status`: Obligatorio, valores: `PENDING`, `IN_PROGRESS`, `COMPLETED`\n- `priority`: Obligatorio, valores: `LOW`, `MEDIUM`, `HIGH`\n- `dueDate`: Opcional, formato: `YYYY-MM-DD`\n\n**Respuesta Exitosa (201 Created):**\n\n```json\n{\n  \"id\": 1,\n  \"title\": \"Estudiar Spring Boot\",\n  \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n  \"status\": \"PENDING\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-22\",\n  \"createdAt\": \"2025-11-25T12:34:04\",\n  \"updatedAt\": \"2025-11-25T12:34:04\"\n}\n```\n\n**Errores posibles:**\n\n- `400 Bad Request`: Error de validación\n  ```json\n  {\n    \"timestamp\": \"2025-11-25T12:34:04\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"message\": \"Error de validación en los datos enviados\",\n    \"path\": \"/api/tasks\",\n    \"validationErrors\": {\n      \"title\": \"El titulo debe tener entre 3 a 100 caracteres\",\n      \"status\": \"El estado de la tarea es obligatorio\"\n    }\n  }\n  ```\n\n---\n\n### 2. Obtener todas las tareas\n\n**GET** `/api/tasks`\n\n**Descripción:** Obtiene todas las tareas almacenadas en el sistema.\n\n**Headers:** No requiere headers especiales\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n[\n  {\n    \"id\": 1,\n    \"title\": \"Estudiar Spring Boot\",\n    \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n    \"status\": \"PENDING\",\n    \"priority\": \"HIGH\",\n    \"dueDate\": \"2025-11-22\",\n    \"createdAt\": \"2025-11-25T12:34:04\",\n    \"updatedAt\": \"2025-11-25T12:34:04\"\n  },\n  {\n    \"id\": 2,\n    \"title\": \"Desarrollar API REST\",\n    \"description\": \"Implementar endpoints CRUD para la gestión de tareas\",\n    \"status\": \"IN_PROGRESS\",\n    \"priority\": \"MEDIUM\",\n    \"dueDate\": \"2025-11-20\",\n    \"createdAt\": \"2025-11-25T12:35:10\",\n    \"updatedAt\": \"2025-11-25T12:40:15\"\n  }\n]\n```\n\n**Nota:** Si no hay tareas, retorna un array vacío `[]`\n\n---\n\n### 3. Obtener una tarea por ID\n\n**GET** `/api/tasks/{id}`\n\n**Descripción:** Obtiene una tarea específica por su ID.\n\n**Parámetros de URL:**\n\n- `id` (Long): ID de la tarea a buscar\n\n**Ejemplo:** `GET /api/tasks/1`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n{\n  \"id\": 1,\n  \"title\": \"Estudiar Spring Boot\",\n  \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n  \"status\": \"PENDING\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-22\",\n  \"createdAt\": \"2025-11-25T12:34:04\",\n  \"updatedAt\": \"2025-11-25T12:34:04\"\n}\n```\n\n**Errores posibles:**\n\n- `404 Not Found`: Tarea no encontrada\n  ```json\n  {\n    \"timestamp\": \"2025-11-25T12:34:04\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"Tarea con ID 999 no encontrada\",\n    \"path\": \"/api/tasks/999\"\n  }\n  ```\n\n---\n\n### 4. Actualizar una tarea\n\n**PUT** `/api/tasks/{id}`\n\n**Descripción:** Actualiza una tarea existente por su ID.\n\n**Parámetros de URL:**\n\n- `id` (Long): ID de la tarea a actualizar\n\n**Headers:**\n\n```\nContent-Type: application/json\n```\n\n**Body (raw JSON):**\n\n```json\n{\n  \"title\": \"Tarea actualizada\",\n  \"description\": \"Descripción actualizada de la tarea\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\",\n  \"dueDate\": \"2025-11-25\"\n}\n```\n\n**Validaciones:**\n\n- `title`: Obligatorio, entre 3-100 caracteres\n- `description`: Opcional, máximo 500 caracteres\n- `status`: Obligatorio, valores: `PENDING`, `IN_PROGRESS`, `COMPLETED`\n- `priority`: Obligatorio, valores: `LOW`, `MEDIUM`, `HIGH`\n- `dueDate`: Opcional, formato: `YYYY-MM-DD`\n\n**Ejemplo:** `PUT /api/tasks/1`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n{\n  \"id\": 1,\n  \"title\": \"Tarea actualizada\",\n  \"description\": \"Descripción actualizada de la tarea\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\",\n  \"dueDate\": \"2025-11-25\",\n  \"createdAt\": \"2025-11-25T12:34:04\",\n  \"updatedAt\": \"2025-11-25T12:45:20\"\n}\n```\n\n**Errores posibles:**\n\n- `400 Bad Request`: Error de validación\n- `404 Not Found`: Tarea no encontrada\n\n---\n\n### 5. Eliminar una tarea\n\n**DELETE** `/api/tasks/{id}`\n\n**Descripción:** Elimina una tarea por su ID.\n\n**Parámetros de URL:**\n\n- `id` (Long): ID de la tarea a eliminar\n\n**Ejemplo:** `DELETE /api/tasks/1`\n\n**Respuesta Exitosa (204 No Content):**  \nSin cuerpo de respuesta\n\n**Errores posibles:**\n\n- `404 Not Found`: Tarea no encontrada\n  ```json\n  {\n    \"timestamp\": \"2025-11-25T12:34:04\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"Tarea con ID 999 no encontrada\",\n    \"path\": \"/api/tasks/999\"\n  }\n  ```\n\n---\n\n### 6. Filtrar tareas por estado\n\n**GET** `/api/tasks/status/{status}`\n\n**Descripción:** Obtiene todas las tareas con un estado específico.\n\n**Parámetros de URL:**\n\n- `status` (String): Estado de la tarea. Valores válidos: `PENDING`, `IN_PROGRESS`, `COMPLETED`\n\n**Ejemplo:** `GET /api/tasks/status/PENDING`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n[\n  {\n    \"id\": 1,\n    \"title\": \"Estudiar Spring Boot\",\n    \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n    \"status\": \"PENDING\",\n    \"priority\": \"HIGH\",\n    \"dueDate\": \"2025-11-22\",\n    \"createdAt\": \"2025-11-25T12:34:04\",\n    \"updatedAt\": \"2025-11-25T12:34:04\"\n  }\n]\n```\n\n**Nota:** Si no hay tareas con ese estado, retorna un array vacío `[]`\n\n---\n\n### 7. Filtrar tareas por prioridad\n\n**GET** `/api/tasks/priority/{priority}`\n\n**Descripción:** Obtiene todas las tareas con una prioridad específica.\n\n**Parámetros de URL:**\n\n- `priority` (String): Prioridad de la tarea. Valores válidos: `LOW`, `MEDIUM`, `HIGH`\n\n**Ejemplo:** `GET /api/tasks/priority/HIGH`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n[\n  {\n    \"id\": 1,\n    \"title\": \"Estudiar Spring Boot\",\n    \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n    \"status\": \"PENDING\",\n    \"priority\": \"HIGH\",\n    \"dueDate\": \"2025-11-22\",\n    \"createdAt\": \"2025-11-25T12:34:04\",\n    \"updatedAt\": \"2025-11-25T12:34:04\"\n  }\n]\n```\n\n**Nota:** Si no hay tareas con esa prioridad, retorna un array vacío `[]`\n\n---\n\n### 8. Filtrar tareas por estado y prioridad (combinado)\n\n**GET** `/api/tasks/filter?status={status}&priority={priority}`\n\n**Descripción:** Obtiene todas las tareas que coincidan con un estado Y una prioridad específicos.\n\n**Query Parameters:**\n\n- `status` (String, requerido): Estado de la tarea. Valores válidos: `PENDING`, `IN_PROGRESS`, `COMPLETED`\n- `priority` (String, requerido): Prioridad de la tarea. Valores válidos: `LOW`, `MEDIUM`, `HIGH`\n\n**Ejemplo:** `GET /api/tasks/filter?status=PENDING&priority=HIGH`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n[\n  {\n    \"id\": 1,\n    \"title\": \"Estudiar Spring Boot\",\n    \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n    \"status\": \"PENDING\",\n    \"priority\": \"HIGH\",\n    \"dueDate\": \"2025-11-22\",\n    \"createdAt\": \"2025-11-25T12:34:04\",\n    \"updatedAt\": \"2025-11-25T12:34:04\"\n  }\n]\n```\n\n**Nota:** Si no hay tareas que coincidan, retorna un array vacío `[]`\n\n---\n\n### 9. Buscar tareas por rango de fechas\n\n**GET** `/api/tasks/due-date-range?startDate={startDate}&endDate={endDate}`\n\n**Descripción:** Obtiene todas las tareas cuya fecha límite (`dueDate`) esté dentro del rango especificado.\n\n**Query Parameters:**\n\n- `startDate` (String, requerido): Fecha de inicio del rango. Formato: `YYYY-MM-DD`\n- `endDate` (String, requerido): Fecha de fin del rango. Formato: `YYYY-MM-DD`\n\n**Ejemplo:** `GET /api/tasks/due-date-range?startDate=2025-11-01&endDate=2025-11-30`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n[\n  {\n    \"id\": 1,\n    \"title\": \"Estudiar Spring Boot\",\n    \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n    \"status\": \"PENDING\",\n    \"priority\": \"HIGH\",\n    \"dueDate\": \"2025-11-22\",\n    \"createdAt\": \"2025-11-25T12:34:04\",\n    \"updatedAt\": \"2025-11-25T12:34:04\"\n  }\n]\n```\n\n**Nota:** Si no hay tareas en ese rango, retorna un array vacío `[]`\n\n---\n\n### 10. Obtener tareas vencidas\n\n**GET** `/api/tasks/overdue`\n\n**Descripción:** Obtiene todas las tareas que están vencidas (fecha límite pasada y estado diferente a `COMPLETED`).\n\n**Headers:** No requiere headers especiales\n\n**Ejemplo:** `GET /api/tasks/overdue`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n[\n  {\n    \"id\": 5,\n    \"title\": \"Revisar código legacy\",\n    \"description\": \"Refactorizar módulo de autenticación\",\n    \"status\": \"PENDING\",\n    \"priority\": \"MEDIUM\",\n    \"dueDate\": \"2025-11-05\",\n    \"createdAt\": \"2025-11-25T12:34:04\",\n    \"updatedAt\": \"2025-11-25T12:34:04\"\n  }\n]\n```\n\n**Nota:** Si no hay tareas vencidas, retorna un array vacío `[]`\n\n---\n\n### 11. Obtener tareas que vencen hoy\n\n**GET** `/api/tasks/due-today`\n\n**Descripción:** Obtiene todas las tareas que tienen fecha límite igual a la fecha actual y estado diferente a `COMPLETED`.\n\n**Headers:** No requiere headers especiales\n\n**Ejemplo:** `GET /api/tasks/due-today`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n[\n  {\n    \"id\": 2,\n    \"title\": \"Desarrollar API REST\",\n    \"description\": \"Implementar endpoints CRUD para la gestión de tareas\",\n    \"status\": \"IN_PROGRESS\",\n    \"priority\": \"MEDIUM\",\n    \"dueDate\": \"2025-11-25\",\n    \"createdAt\": \"2025-11-25T12:35:10\",\n    \"updatedAt\": \"2025-11-25T12:40:15\"\n  }\n]\n```\n\n**Nota:** Si no hay tareas que vencen hoy, retorna un array vacío `[]`\n\n---\n\n### 12. Buscar tareas por término de búsqueda\n\n**GET** `/api/tasks/search?term={term}`\n\n**Descripción:** Busca tareas cuyo título o descripción contenga el término especificado (búsqueda case-insensitive).\n\n**Query Parameters:**\n\n- `term` (String, requerido): Término de búsqueda a buscar en título o descripción\n\n**Ejemplo:** `GET /api/tasks/search?term=Spring`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n[\n  {\n    \"id\": 1,\n    \"title\": \"Estudiar Spring Boot\",\n    \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n    \"status\": \"PENDING\",\n    \"priority\": \"HIGH\",\n    \"dueDate\": \"2025-11-22\",\n    \"createdAt\": \"2025-11-25T12:34:04\",\n    \"updatedAt\": \"2025-11-25T12:34:04\"\n  }\n]\n```\n\n**Nota:** Si no se encuentran tareas, retorna un array vacío `[]`\n\n---\n\n### 13. Marcar tarea como en progreso (Bonus)\n\n**PATCH** `/api/tasks/{id}/in-progress`\n\n**Descripción:** Marca una tarea como en progreso (cambia el estado a `IN_PROGRESS`).\n\n**Parámetros de URL:**\n\n- `id` (Long): ID de la tarea a actualizar\n\n**Ejemplo:** `PATCH /api/tasks/1/in-progress`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n{\n  \"id\": 1,\n  \"title\": \"Estudiar Spring Boot\",\n  \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-22\",\n  \"createdAt\": \"2025-11-25T12:34:04\",\n  \"updatedAt\": \"2025-11-25T12:50:30\"\n}\n```\n\n**Errores posibles:**\n\n- `404 Not Found`: Tarea no encontrada\n\n---\n\n### 14. Marcar tarea como completada (Bonus)\n\n**PATCH** `/api/tasks/{id}/complete`\n\n**Descripción:** Marca una tarea como completada (cambia el estado a `COMPLETED`).\n\n**Parámetros de URL:**\n\n- `id` (Long): ID de la tarea a actualizar\n\n**Ejemplo:** `PATCH /api/tasks/1/complete`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n{\n  \"id\": 1,\n  \"title\": \"Estudiar Spring Boot\",\n  \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n  \"status\": \"COMPLETED\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-22\",\n  \"createdAt\": \"2025-11-25T12:34:04\",\n  \"updatedAt\": \"2025-11-25T12:55:45\"\n}\n```\n\n**Errores posibles:**\n\n- `404 Not Found`: Tarea no encontrada\n\n---\n\n### 15. Contar tareas por estado (Bonus)\n\n**GET** `/api/tasks/count/status/{status}`\n\n**Descripción:** Retorna el número total de tareas con un estado específico.\n\n**Parámetros de URL:**\n\n- `status` (String): Estado de la tarea. Valores válidos: `PENDING`, `IN_PROGRESS`, `COMPLETED`\n\n**Ejemplo:** `GET /api/tasks/count/status/PENDING`\n\n**Respuesta Exitosa (200 OK):**\n\n```json\n5\n```\n\n**Nota:** Retorna un número entero (Long) con el conteo de tareas\n\n---\n\n## 🔧 Configuración en Postman\n\n### Variables de Entorno (Recomendado)\n\nCrea un entorno en Postman con las siguientes variables:\n\n| Variable | Valor Inicial | Descripción |\n| --- | --- | --- |\n| `base_url` | `http://localhost:8080` | URL base del servidor |\n| `api_path` | `/api/tasks` | Ruta base de la API |\n\n**Uso en requests:**\n\n- URL completa: `{{base_url}}{{api_path}}`\n- Para obtener por ID: `{{base_url}}{{api_path}}/1`\n- Para filtros: `{{base_url}}{{api_path}}/status/PENDING`\n- Para búsquedas: `{{base_url}}{{api_path}}/search?term=Spring`\n\n---\n\n## 📝 Ejemplos de Requests Completos\n\n### Crear Tarea\n\n```\nPOST http://localhost:8080/api/tasks\nContent-Type: application/json\n\n{\n  \"title\": \"Estudiar Spring Boot\",\n  \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n  \"status\": \"PENDING\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-22\"\n}\n```\n\n### Obtener Todas las Tareas\n\n```\nGET http://localhost:8080/api/tasks\n```\n\n### Obtener Tarea por ID\n\n```\nGET http://localhost:8080/api/tasks/1\n```\n\n### Actualizar Tarea\n\n```\nPUT http://localhost:8080/api/tasks/1\nContent-Type: application/json\n\n{\n  \"title\": \"Título actualizado\",\n  \"description\": \"Descripción actualizada\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\",\n  \"dueDate\": \"2025-11-25\"\n}\n```\n\n### Eliminar Tarea\n\n```\nDELETE http://localhost:8080/api/tasks/1\n```\n\n### Filtrar por Estado\n\n```\nGET http://localhost:8080/api/tasks/status/PENDING\n```\n\n### Filtrar por Prioridad\n\n```\nGET http://localhost:8080/api/tasks/priority/HIGH\n```\n\n### Filtrar por Estado y Prioridad\n\n```\nGET http://localhost:8080/api/tasks/filter?status=PENDING&priority=HIGH\n```\n\n### Buscar por Rango de Fechas\n\n```\nGET http://localhost:8080/api/tasks/due-date-range?startDate=2025-11-01&endDate=2025-11-30\n```\n\n### Obtener Tareas Vencidas\n\n```\nGET http://localhost:8080/api/tasks/overdue\n```\n\n### Obtener Tareas que Vencen Hoy\n\n```\nGET http://localhost:8080/api/tasks/due-today\n```\n\n### Buscar por Término\n\n```\nGET http://localhost:8080/api/tasks/search?term=Spring\n```\n\n### Marcar como En Progreso\n\n```\nPATCH http://localhost:8080/api/tasks/1/in-progress\n```\n\n### Marcar como Completada\n\n```\nPATCH http://localhost:8080/api/tasks/1/complete\n```\n\n### Contar por Estado\n\n```\nGET http://localhost:8080/api/tasks/count/status/PENDING\n```\n\n---\n\n## ⚠️ Notas Importantes\n\n1. **Campos generados automáticamente:**\n   - `id`: Se genera automáticamente al crear (no enviar en POST)\n   - `createdAt`: Se genera automáticamente al crear (no enviar)\n   - `updatedAt`: Se actualiza automáticamente (no enviar)\n\n2. **Validaciones:**\n   - El `title` es obligatorio y debe tener entre 3-100 caracteres\n   - El `description` es opcional pero no debe superar los 500 caracteres\n   - El `status` es obligatorio y debe ser uno de: `PENDING`, `IN_PROGRESS`, `COMPLETED`\n   - El `priority` es obligatorio y debe ser uno de: `LOW`, `MEDIUM`, `HIGH`\n   - El `dueDate` es opcional y debe estar en formato `YYYY-MM-DD`\n\n3. **Valores por defecto:**\n   - Si no se especifica `status`, se asigna `PENDING` por defecto\n   - Si no se especifica `priority`, se asigna `MEDIUM` por defecto\n\n4. **Códigos de Estado HTTP:**\n   - `200 OK`: Operación exitosa (GET, PUT, PATCH)\n   - `201 Created`: Recurso creado exitosamente (POST)\n   - `204 No Content`: Recurso eliminado exitosamente (DELETE)\n   - `400 Bad Request`: Error de validación\n   - `404 Not Found`: Recurso no encontrado\n   - `500 Internal Server Error`: Error interno del servidor\n\n5. **Filtros y Búsquedas:**\n   - Los filtros retornan arrays vacíos `[]` si no hay resultados\n   - La búsqueda por término es case-insensitive (no distingue mayúsculas/minúsculas)\n   - Las fechas deben estar en formato ISO: `YYYY-MM-DD`\n\n6. **Endpoints Bonus:**\n   - Los endpoints PATCH (`/in-progress` y `/complete`) actualizan automáticamente el campo `updatedAt`\n   - El endpoint de conteo retorna un número entero (Long)\n\n---\n\n## 📌 Requisitos Previos\n\nAntes de usar la API, asegúrate de:\n\n1. ✅ Tener MySQL corriendo en `localhost:3306`\n2. ✅ Tener la base de datos `notas` creada (se crea automáticamente si no existe)\n3. ✅ Tener las credenciales correctas configuradas (`root`/`root` por defecto)\n4. ✅ Tener la aplicación Spring Boot corriendo en el puerto `8080`\n\n---\n\n## 🔍 Troubleshooting\n\n### Error 500 Internal Server Error\n\n- Verifica que MySQL esté corriendo\n- Verifica que la base de datos exista o pueda crearse\n- Revisa los logs de la aplicación para más detalles\n\n### Error 400 Bad Request\n\n- Verifica que el body JSON esté correctamente formateado\n- Asegúrate de incluir los campos obligatorios: `title`, `status`, `priority`\n- Verifica que los campos no excedan los límites de caracteres\n- Verifica que los valores de `status` y `priority` sean válidos\n- Verifica que el formato de fecha sea `YYYY-MM-DD` si se envía `dueDate`\n\n### Error 404 Not Found\n\n- Verifica que el ID de la tarea exista en la base de datos\n- Usa el endpoint GET `/api/tasks` para listar todas las tareas disponibles\n- Verifica que los valores de `status` y `priority` en los filtros sean correctos (mayúsculas)\n\n### Filtros y Búsquedas sin Resultados\n\n- Si un filtro retorna un array vacío, significa que no hay tareas que coincidan con los criterios\n- Verifica que los valores de estado y prioridad estén en mayúsculas: `PENDING`, `IN_PROGRESS`, `COMPLETED`, `LOW`, `MEDIUM`, `HIGH`\n- Para búsquedas por término, verifica que el término exista en el título o descripción de alguna tarea\n\n### Problemas con Fechas\n\n- Asegúrate de usar el formato correcto: `YYYY-MM-DD` (ejemplo: `2025-11-25`)\n- Las fechas deben ser válidas (no fechas inexistentes como `2025-13-45`)\n- Para rangos de fechas, `startDate` debe ser anterior o igual a `endDate`\n\n---\n\n## 📊 Valores Válidos para Enums\n\n### Status (Estado)\n- `PENDING` - Tarea pendiente\n- `IN_PROGRESS` - Tarea en progreso\n- `COMPLETED` - Tarea completada\n\n### Priority (Prioridad)\n- `LOW` - Prioridad baja\n- `MEDIUM` - Prioridad media\n- `HIGH` - Prioridad alta\n\n**Importante:** Los valores deben estar en mayúsculas exactamente como se muestran arriba.\n\n---\n\n## 🎯 Ejemplos de Datos de Prueba\n\n### Tarea 1: Alta prioridad, pendiente\n```json\n{\n  \"title\": \"Estudiar Spring Boot\",\n  \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n  \"status\": \"PENDING\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-22\"\n}\n```\n\n### Tarea 2: Media prioridad, en progreso\n```json\n{\n  \"title\": \"Desarrollar API REST\",\n  \"description\": \"Implementar endpoints CRUD para la gestión de tareas\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\",\n  \"dueDate\": \"2025-11-20\"\n}\n```\n\n### Tarea 3: Baja prioridad, pendiente\n```json\n{\n  \"title\": \"Documentar proyecto\",\n  \"description\": \"Crear README con instrucciones de uso y ejemplos\",\n  \"status\": \"PENDING\",\n  \"priority\": \"LOW\",\n  \"dueDate\": \"2025-11-25\"\n}\n```\n\n### Tarea 4: Alta prioridad, completada\n```json\n{\n  \"title\": \"Configurar base de datos\",\n  \"description\": \"Instalar MySQL y crear esquema inicial\",\n  \"status\": \"COMPLETED\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-10\"\n}\n```\n\n### Tarea 5: Media prioridad, vencida (fecha pasada)\n```json\n{\n  \"title\": \"Revisar código legacy\",\n  \"description\": \"Refactorizar módulo de autenticación\",\n  \"status\": \"PENDING\",\n  \"priority\": \"MEDIUM\",\n  \"dueDate\": \"2025-11-05\"\n}\n```\n\n---\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33377290"
+	},
+	"item": [
+		{
+			"name": "Crea Tarea",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Estudiar Spring Boot\",\n  \"description\": \"Repasar conceptos de IoC, DI y configuración de Spring\",\n  \"status\": \"PENDING\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2025-11-22\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{api_path}}",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todas las tareas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Tarea por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Tarea",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Tarea actualizada\",\n  \"description\": \"Descripción actualizada de la tarea\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\",\n  \"dueDate\": \"2025-11-25\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Tarea",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por estado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/status/PENDING",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"status",
+						"PENDING"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por prioridad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/priority/HIGH",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"priority",
+						"HIGH"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtro combinado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/filter?status=IN_PROGRESS&priority=HIGH",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"filter"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "IN_PROGRESS",
+							"description": "PENDING - IN_PROGRESS - COMPLETED"
+						},
+						{
+							"key": "priority",
+							"value": "HIGH",
+							"description": "LOW - MEDIUM - HIGH"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rango de fechas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/due-date-range?startDate=2025-12-06&endDate=2025-12-12",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"due-date-range"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2025-12-06"
+						},
+						{
+							"key": "endDate",
+							"value": "2025-12-12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tareas vencidas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/overdue",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"overdue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener tareas que vencen hoy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/due-today",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"due-today"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Búsqueda por texto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/search?term=documentar",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "term",
+							"value": "documentar"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Marcar como 'En Progreso'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1/in-progress",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1",
+						"in-progress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Marcar como 'Completada'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1/complete",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Contar tareas por estado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/count/status/IN_PROGRESS",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"count",
+						"status",
+						"IN_PROGRESS"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "api_path",
+			"value": "/api/tasks"
+		}
+	]
+}
