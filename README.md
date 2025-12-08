@@ -73,7 +73,10 @@ A lo largo de este desafío estaré trabajando con:
 │   ├── notes/                    # Proyecto Spring Boot
 │   ├── postman/                  # Colección de Postman
 │   └── assets/                   # Imágenes y recursos
-├── [Proyecto 2]/
+├── [Gestor de Tareas]/
+│   ├── tasks/                    # Proyecto Spring Boot
+│   ├── postman/                  # Colección de Postman
+│   └── assets/                   # Imágenes y recursos
 ├── [Proyecto 3]/
 └── ...
 ```

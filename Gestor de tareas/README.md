@@ -205,7 +205,7 @@ Este proyecto pertenece al **Módulo 1 – CRUD básicos** de la serie de 20 pro
 
 ## 📬 Colección de Postman
 
-Se incluye una colección completa de Postman para probar todos los endpoints de la API.
+Se incluye una colección completa de Postman para probar todos los endpoints de la API de forma rápida y sencilla. **Para probar más rápido**, descarga e importa el archivo JSON de la colección de Postman incluido en el proyecto.
 
 ### Importar la Colección
 
