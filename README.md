@@ -34,6 +34,13 @@ Este desafío está formado por **20 proyectos progresivos** que cubren diferent
 - **Ubicación**: [`Gestor de tareas/`](./Gestor%20de%20tareas/)
 - **Documentación**: Ver [README del proyecto](./Gestor%20de%20tareas/README.md)
 
+### Proyecto 3: Gestor de Gastos Personales ✅
+- **Estado**: ✅ Completado
+- **Descripción**: Sistema completo de gestión de gastos personales con CRUD, filtros por categoría/método de pago/fechas, y reportes estadísticos
+- **Tecnologías**: Spring Boot, JPA, MySQL, Lombok, Enums
+- **Ubicación**: [`Gestor de Gastos/`](./Gestor%20de%20Gastos/)
+- **Documentación**: Ver [README del proyecto](./Gestor%20de%20Gastos/README.md)
+
 ---
 
 ## 🎯 Progreso
@@ -41,12 +48,12 @@ Este desafío está formado por **20 proyectos progresivos** que cubren diferent
 | # | Proyecto | Estado | Descripción |
 |---|----------|--------|-------------|
 | 1 | Gestor de Notas Personales | ✅ Completado | CRUD básico con validaciones |
-| 2 | Gestor de Tareas | ✅ Completado | CRUD básico con validaciones |
-| 3 | - | ⏳ Pendiente | - |
+| 2 | Gestor de Tareas | ✅ Completado | CRUD con filtros avanzados y búsquedas |
+| 3 | Gestor de Gastos Personales | ✅ Completado | CRUD con filtros, reportes y enums |
 | ... | ... | ... | ... |
 | 20 | - | ⏳ Pendiente | - |
 
-**Progreso general**: 2/20 proyectos completados (10%)
+**Progreso general**: 3/20 proyectos completados (15%)
 
 ---
 
@@ -73,11 +80,14 @@ A lo largo de este desafío estaré trabajando con:
 │   ├── notes/                    # Proyecto Spring Boot
 │   ├── postman/                  # Colección de Postman
 │   └── assets/                   # Imágenes y recursos
-├── [Gestor de Tareas]/
+├── Gestor de Tareas/
 │   ├── tasks/                    # Proyecto Spring Boot
 │   ├── postman/                  # Colección de Postman
 │   └── assets/                   # Imágenes y recursos
-├── [Proyecto 3]/
+├── Gestor de Gastos/
+│   ├── expenses/                 # Proyecto Spring Boot
+│   ├── postman/                  # Colección de Postman
+│   └── assets/                   # Imágenes y recursos
 └── ...
 ```
 

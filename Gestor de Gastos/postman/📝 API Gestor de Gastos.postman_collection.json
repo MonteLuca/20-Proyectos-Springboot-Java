@@ -1,0 +1,260 @@
+{
+	"info": {
+		"_postman_id": "3eeb9ef3-4897-4a86-8bc8-5e236485a89d",
+		"name": "📝 API Gestor de Gastos",
+		"description": "# 📬 Documentación de la API - Gestor de Gastos Personales\n\n## 📋 Información General\n\n**Base URL**: `http://localhost:8080/api/expenses`\n\n**Content-Type**: `application/json`\n\n---\n\n## 🔐 Variables de Entorno (Postman)\n\nRecomendado configurar estas variables en Postman:\n\n- `base_url`: `http://localhost:8080`\n- `api_path`: `/api/expenses`\n\nLuego usar: `{{base_url}}{{api_path}}` en las URLs\n\n---\n\n## 📝 Endpoints CRUD\n\n### 1. Crear Gasto\n\n**POST** `/api/expenses`\n\n**Descripción**: Crea un nuevo gasto personal.\n\n**Headers**:\n```\nContent-Type: application/json\n```\n\n**Body (JSON)**:\n```json\n{\n  \"description\": \"Compra de supermercado\",\n  \"amount\": 125.50,\n  \"category\": \"FOOD\",\n  \"date\": \"2024-11-20\",\n  \"paymentMethod\": \"DEBIT_CARD\"\n}\n```\n\n**Validaciones**:\n- `description`: Obligatorio, entre 3 y 200 caracteres\n- `amount`: Obligatorio, mínimo 0.01, máximo 10 dígitos enteros y 2 decimales\n- `category`: Obligatorio, debe ser uno de los valores válidos del enum\n- `date`: Obligatorio, formato ISO (YYYY-MM-DD), no puede ser futura\n- `paymentMethod`: Obligatorio, debe ser uno de los valores válidos del enum\n\n**Valores válidos para `category`**:\n- `FOOD`\n- `TRANSPORT`\n- `ENTERTAINMENT`\n- `HEALTH`\n- `EDUCATION`\n- `UTILITIES`\n- `SHOPPING`\n- `OTHER`\n\n**Valores válidos para `paymentMethod`**:\n- `CASH`\n- `DEBIT_CARD`\n- `CREDIT_CARD`\n- `BANK_TRANSFER`\n- `DIGITAL_WALLET`\n\n**Respuesta Exitosa (201 Created)**:\n```json\n{\n  \"id\": 1,\n  \"description\": \"Compra de supermercado\",\n  \"amount\": 125.50,\n  \"category\": \"FOOD\",\n  \"date\": \"2024-11-20\",\n  \"paymentMethod\": \"DEBIT_CARD\",\n  \"created_at\": \"2024-11-20T10:30:00\",\n  \"updated_at\": \"2024-11-20T10:30:00\"\n}\n```\n\n**Respuesta de Error - Validación (400 Bad Request)**:\n```json\n{\n  \"timestamp\": \"2024-11-20 10:30:00\",\n  \"status\": 400,\n  \"error\": \"Validation failed\",\n  \"errors\": {\n    \"description\": \"La descripcion del gasto debe tener entre 3 y 200 caracteres\",\n    \"amount\": \"La cantidad debe ser mayor a 0\"\n  }\n}\n```\n\n**Respuesta de Error - Fecha Futura (400 Bad Request)**:\n```json\n{\n  \"timestamp\": \"2024-11-20 10:30:00\",\n  \"status\": 400,\n  \"error\": \"Internal Server Error\",\n  \"message\": \"La fecha del gasto no puede ser futura\"\n}\n```\n\n---\n\n### 2. Listar Todos los Gastos\n\n**GET** `/api/expenses`\n\n**Descripción**: Obtiene todos los gastos ordenados por fecha descendente (más recientes primero).\n\n**Headers**: No requiere headers adicionales\n\n**Respuesta Exitosa (200 OK)**:\n```json\n[\n  {\n    \"id\": 3,\n    \"description\": \"Uber al trabajo\",\n    \"amount\": 25.00,\n    \"category\": \"TRANSPORT\",\n    \"date\": \"2024-11-21\",\n    \"paymentMethod\": \"DIGITAL_WALLET\",\n    \"created_at\": \"2024-11-21T08:15:00\",\n    \"updated_at\": \"2024-11-21T08:15:00\"\n  },\n  {\n    \"id\": 2,\n    \"description\": \"Cena en restaurante\",\n    \"amount\": 85.75,\n    \"category\": \"FOOD\",\n    \"date\": \"2024-11-20\",\n    \"paymentMethod\": \"CREDIT_CARD\",\n    \"created_at\": \"2024-11-20T20:00:00\",\n    \"updated_at\": \"2024-11-20T20:00:00\"\n  },\n  {\n    \"id\": 1,\n    \"description\": \"Compra de supermercado\",\n    \"amount\": 125.50,\n    \"category\": \"FOOD\",\n    \"date\": \"2024-11-20\",\n    \"paymentMethod\": \"DEBIT_CARD\",\n    \"created_at\": \"2024-11-20T10:30:00\",\n    \"updated_at\": \"2024-11-20T10:30:00\"\n  }\n]\n```\n\n**Respuesta cuando no hay gastos (200 OK)**:\n```json\n[]\n```\n\n---\n\n### 3. Actualizar Gasto\n\n**PUT** `/api/expenses/{id}`\n\n**Descripción**: Actualiza un gasto existente por su ID.\n\n**Parámetros de URL**:\n- `id`: ID del gasto a actualizar (Long)\n\n**Headers**:\n```\nContent-Type: application/json\n```\n\n**Body (JSON)**:\n```json\n{\n  \"description\": \"Supermercado y productos de limpieza\",\n  \"amount\": 145.80,\n  \"category\": \"FOOD\",\n  \"date\": \"2024-11-20\",\n  \"paymentMethod\": \"CREDIT_CARD\"\n}\n```\n\n**Respuesta Exitosa (200 OK)**:\n```json\n{\n  \"id\": 1,\n  \"description\": \"Supermercado y productos de limpieza\",\n  \"amount\": 145.80,\n  \"category\": \"FOOD\",\n  \"date\": \"2024-11-20\",\n  \"paymentMethod\": \"CREDIT_CARD\",\n  \"created_at\": \"2024-11-20T10:30:00\",\n  \"updated_at\": \"2024-11-20T15:45:00\"\n}\n```\n\n**Respuesta de Error - Gasto No Encontrado (404 Not Found)**:\n```json\n{\n  \"timestamp\": \"2024-11-20 15:45:00\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"No se encontró el gasto con ID: 999\"\n}\n```\n\n---\n\n### 4. Eliminar Gasto\n\n**DELETE** `/api/expenses/{id}`\n\n**Descripción**: Elimina un gasto por su ID.\n\n**Parámetros de URL**:\n- `id`: ID del gasto a eliminar (Long)\n\n**Respuesta Exitosa (204 No Content)**:\nSin cuerpo de respuesta\n\n**Respuesta de Error - Gasto No Encontrado (404 Not Found)**:\n```json\n{\n  \"timestamp\": \"2024-11-20 16:00:00\",\n  \"status\": 404,\n  \"error\": \"Not Found\",\n  \"message\": \"No se encontró el gasto con ID: 999\"\n}\n```\n\n---\n\n## 🔍 Endpoints de Filtros\n\n### 5. Filtrar Gastos por Categoría\n\n**GET** `/api/expenses/category/{category}`\n\n**Descripción**: Obtiene todos los gastos de una categoría específica, ordenados por fecha descendente.\n\n**Parámetros de URL**:\n- `category`: Categoría del gasto (CategoryEnum)\n  - Valores válidos: `FOOD`, `TRANSPORT`, `ENTERTAINMENT`, `HEALTH`, `EDUCATION`, `UTILITIES`, `SHOPPING`, `OTHER`\n\n**Ejemplo de URL**:\n```\nGET http://localhost:8080/api/expenses/category/FOOD\n```\n\n**Respuesta Exitosa (200 OK)**:\n```json\n[\n  {\n    \"id\": 2,\n    \"description\": \"Cena en restaurante\",\n    \"amount\": 85.75,\n    \"category\": \"FOOD\",\n    \"date\": \"2024-11-20\",\n    \"paymentMethod\": \"CREDIT_CARD\",\n    \"created_at\": \"2024-11-20T20:00:00\",\n    \"updated_at\": \"2024-11-20T20:00:00\"\n  },\n  {\n    \"id\": 1,\n    \"description\": \"Compra de supermercado\",\n    \"amount\": 125.50,\n    \"category\": \"FOOD\",\n    \"date\": \"2024-11-20\",\n    \"paymentMethod\": \"DEBIT_CARD\",\n    \"created_at\": \"2024-11-20T10:30:00\",\n    \"updated_at\": \"2024-11-20T10:30:00\"\n  }\n]\n```\n\n---\n\n### 6. Filtrar Gastos por Método de Pago\n\n**GET** `/api/expenses/payment-method/{paymentMethod}`\n\n**Descripción**: Obtiene todos los gastos realizados con un método de pago específico, ordenados por fecha descendente.\n\n**Parámetros de URL**:\n- `paymentMethod`: Método de pago (PaymentMethodEnum)\n  - Valores válidos: `CASH`, `DEBIT_CARD`, `CREDIT_CARD`, `BANK_TRANSFER`, `DIGITAL_WALLET`\n\n**Ejemplo de URL**:\n```\nGET http://localhost:8080/api/expenses/payment-method/CREDIT_CARD\n```\n\n**Respuesta Exitosa (200 OK)**:\n```json\n[\n  {\n    \"id\": 2,\n    \"description\": \"Cena en restaurante\",\n    \"amount\": 85.75,\n    \"category\": \"FOOD\",\n    \"date\": \"2024-11-20\",\n    \"paymentMethod\": \"CREDIT_CARD\",\n    \"created_at\": \"2024-11-20T20:00:00\",\n    \"updated_at\": \"2024-11-20T20:00:00\"\n  }\n]\n```\n\n---\n\n### 7. Filtrar Gastos por Rango de Fechas\n\n**GET** `/api/expenses/between?startDate={startDate}&endDate={endDate}`\n\n**Descripción**: Obtiene todos los gastos dentro de un rango de fechas, ordenados por fecha descendente.\n\n**Query Parameters**:\n- `startDate`: Fecha inicial (formato ISO: YYYY-MM-DD)\n- `endDate`: Fecha final (formato ISO: YYYY-MM-DD)\n\n**Ejemplo de URL**:\n```\nGET http://localhost:8080/api/expenses/between?startDate=2024-11-01&endDate=2024-11-30\n```\n\n**Respuesta Exitosa (200 OK)**:\n```json\n[\n  {\n    \"id\": 3,\n    \"description\": \"Uber al trabajo\",\n    \"amount\": 25.00,\n    \"category\": \"TRANSPORT\",\n    \"date\": \"2024-11-21\",\n    \"paymentMethod\": \"DIGITAL_WALLET\",\n    \"created_at\": \"2024-11-21T08:15:00\",\n    \"updated_at\": \"2024-11-21T08:15:00\"\n  },\n  {\n    \"id\": 2,\n    \"description\": \"Cena en restaurante\",\n    \"amount\": 85.75,\n    \"category\": \"FOOD\",\n    \"date\": \"2024-11-20\",\n    \"paymentMethod\": \"CREDIT_CARD\",\n    \"created_at\": \"2024-11-20T20:00:00\",\n    \"updated_at\": \"2024-11-20T20:00:00\"\n  }\n]\n```\n\n---\n\n## 📊 Endpoints de Reportes\n\n### 8. Reporte por Categoría\n\n**GET** `/api/expenses/reports/by-category`\n\n**Descripción**: Genera un reporte agrupado por categoría mostrando el total gastado y la cantidad de gastos por cada categoría. Los resultados están ordenados por monto total descendente.\n\n**Respuesta Exitosa (200 OK)**:\n```json\n[\n  {\n    \"category\": \"FOOD\",\n    \"totalAmount\": 211.25,\n    \"expenseCount\": 2\n  },\n  {\n    \"category\": \"TRANSPORT\",\n    \"totalAmount\": 25.00,\n    \"expenseCount\": 1\n  },\n  {\n    \"category\": \"HEALTH\",\n    \"totalAmount\": 150.00,\n    \"expenseCount\": 1\n  }\n]\n```\n\n**Descripción de campos**:\n- `category`: Nombre de la categoría\n- `totalAmount`: Suma total de gastos en esa categoría (BigDecimal)\n- `expenseCount`: Cantidad de gastos en esa categoría\n\n---\n\n### 9. Reporte por Período\n\n**GET** `/api/expenses/reports/period?startDate={startDate}&endDate={endDate}`\n\n**Descripción**: Genera un reporte con estadísticas de gastos en un período específico.\n\n**Query Parameters**:\n- `startDate`: Fecha inicial del período (formato ISO: YYYY-MM-DD)\n- `endDate`: Fecha final del período (formato ISO: YYYY-MM-DD)\n\n**Ejemplo de URL**:\n```\nGET http://localhost:8080/api/expenses/reports/period?startDate=2024-11-01&endDate=2024-11-30\n```\n\n**Respuesta Exitosa (200 OK)**:\n```json\n{\n  \"startDate\": \"2024-11-01\",\n  \"endDate\": \"2024-11-30\",\n  \"totalAmount\": 386.25,\n  \"expenseCount\": 4,\n  \"averageExpense\": 96.56\n}\n```\n\n**Descripción de campos**:\n- `startDate`: Fecha inicial del período\n- `endDate`: Fecha final del período\n- `totalAmount`: Suma total de gastos en el período (BigDecimal)\n- `expenseCount`: Cantidad total de gastos en el período\n- `averageExpense`: Promedio de gastos (totalAmount / expenseCount) con 2 decimales\n\n---\n\n### 10. Reporte del Mes Actual\n\n**GET** `/api/expenses/reports/current-month`\n\n**Descripción**: Genera un reporte con estadísticas del mes actual, incluyendo la categoría más costosa y la menos costosa.\n\n**Respuesta Exitosa (200 OK)**:\n```json\n{\n  \"month\": \"NOVEMBER\",\n  \"year\": 2024,\n  \"totalAmount\": 386.25,\n  \"expenseCount\": 4,\n  \"mostExpensiveCategory\": \"FOOD\",\n  \"leastExpensiveCategory\": \"TRANSPORT\"\n}\n```\n\n**Descripción de campos**:\n- `month`: Nombre del mes actual (en inglés, mayúsculas)\n- `year`: Año actual\n- `totalAmount`: Suma total de gastos del mes (BigDecimal)\n- `expenseCount`: Cantidad total de gastos del mes\n- `mostExpensiveCategory`: Categoría con mayor gasto total (String o null si no hay gastos)\n- `leastExpensiveCategory`: Categoría con menor gasto total (String o null si no hay gastos)\n\n**Ejemplo cuando no hay gastos**:\n```json\n{\n  \"month\": \"NOVEMBER\",\n  \"year\": 2024,\n  \"totalAmount\": 0,\n  \"expenseCount\": 0,\n  \"mostExpensiveCategory\": null,\n  \"leastExpensiveCategory\": null\n}\n```\n\n---\n\n## ⚠️ Códigos de Estado HTTP\n\n| Código | Descripción | Cuándo se usa |\n|--------|-------------|---------------|\n| 200 OK | Operación exitosa | GET, PUT exitosos |\n| 201 Created | Recurso creado | POST exitoso |\n| 204 No Content | Sin contenido | DELETE exitoso |\n| 400 Bad Request | Error de validación | Datos inválidos en el body |\n| 404 Not Found | Recurso no encontrado | ID de gasto inexistente |\n| 500 Internal Server Error | Error del servidor | Errores inesperados |\n\n---\n\n## 📌 Ejemplos de Uso Completos\n\n### Flujo completo: Crear, Consultar y Eliminar un Gasto\n\n#### Paso 1: Crear un gasto\n```http\nPOST http://localhost:8080/api/expenses\nContent-Type: application/json\n\n{\n  \"description\": \"Pago de luz\",\n  \"amount\": 85.30,\n  \"category\": \"UTILITIES\",\n  \"date\": \"2024-11-20\",\n  \"paymentMethod\": \"BANK_TRANSFER\"\n}\n```\n\n#### Paso 2: Listar todos los gastos para verificar\n```http\nGET http://localhost:8080/api/expenses\n```\n\n#### Paso 3: Filtrar por categoría\n```http\nGET http://localhost:8080/api/expenses/category/UTILITIES\n```\n\n#### Paso 4: Actualizar el gasto\n```http\nPUT http://localhost:8080/api/expenses/1\nContent-Type: application/json\n\n{\n  \"description\": \"Pago de luz y agua\",\n  \"amount\": 120.50,\n  \"category\": \"UTILITIES\",\n  \"date\": \"2024-11-20\",\n  \"paymentMethod\": \"BANK_TRANSFER\"\n}\n```\n\n#### Paso 5: Obtener reporte del mes actual\n```http\nGET http://localhost:8080/api/expenses/reports/current-month\n```\n\n#### Paso 6: Eliminar el gasto\n```http\nDELETE http://localhost:8080/api/expenses/1\n```\n\n---\n\n## 🔧 Configuración en Postman\n\n### Variables de Colección\n\n1. Crear variables de colección:\n   - `base_url` = `http://localhost:8080`\n   - `api_path` = `/api/expenses`\n\n2. Usar en las URLs:\n   - `{{base_url}}{{api_path}}` para endpoints base\n   - `{{base_url}}{{api_path}}/{id}` para endpoints con ID\n   - `{{base_url}}{{api_path}}/category/{category}` para filtros\n\n### Tests Automatizados (Opcional)\n\nPuedes agregar tests en cada request para validar códigos de estado:\n\n```javascript\n// Test para POST (201 Created)\npm.test(\"Status code is 201\", function () {\n    pm.response.to.have.status(201);\n});\n\npm.test(\"Response has expense data\", function () {\n    var jsonData = pm.response.json();\n    pm.expect(jsonData).to.have.property('id');\n    pm.expect(jsonData).to.have.property('description');\n    pm.expect(jsonData).to.have.property('amount');\n});\n\n// Test para GET (200 OK)\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Test para DELETE (204 No Content)\npm.test(\"Status code is 204\", function () {\n    pm.response.to.have.status(204);\n});\n```\n\n---\n\n## 📝 Notas Importantes\n\n1. **Formato de Fechas**: Todas las fechas deben estar en formato ISO (YYYY-MM-DD)\n\n2. **Formato de Montos**: Los montos deben ser números decimales con máximo 2 decimales (ej: 125.50, 1000.00)\n\n3. **Validación de Fechas**: No se pueden crear gastos con fechas futuras\n\n4. **Ordenamiento**: Los listados están ordenados por fecha descendente (más recientes primero)\n\n5. **Enum Case-Sensitive**: Los valores de los enums (category, paymentMethod) son case-sensitive y deben escribirse exactamente como se muestran (ej: `FOOD`, no `food`)\n\n6. **IDs Autogenerados**: Los IDs se generan automáticamente y no deben enviarse en el body al crear un gasto\n\n---\n\n## 🚀 Prerequisitos\n\n- La aplicación Spring Boot debe estar corriendo en `http://localhost:8080`\n- MySQL debe estar corriendo y accesible\n- Base de datos `notas` debe existir (se crea automáticamente si no existe)\n\n---\n\n**¡Listo para probar! 🎉**\n\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33377290"
+	},
+	"item": [
+		{
+			"name": "Crear Gasto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"GTA V\",\r\n  \"amount\": 20000.00,\r\n  \"category\": \"ENTERTAINMENT\",\r\n  \"date\": \"2025-12-20\",\r\n  \"paymentMethod\": \"BANK_TRANSFER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}{{api_path}}",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Traer gasto por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Traer todos los gastos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Gasto",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Gasto",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/1",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por Categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/category/UTILITIES",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"category",
+						"UTILITIES"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por Rango de Fechas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/between?startDate=2025-12-01&endDate=2025-12-20",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"between"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2025-12-01"
+						},
+						{
+							"key": "endDate",
+							"value": "2025-12-20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por Método de Pago",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/payment-method/DEBIT_CARD",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"payment-method",
+						"DEBIT_CARD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reporte: Total por Categoría",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/reports/by-category",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"reports",
+						"by-category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reporte: Total por Período",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/reports/period?startDate=2025-12-01&endDate=2025-12-20",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"reports",
+						"period"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2025-12-01"
+						},
+						{
+							"key": "endDate",
+							"value": "2025-12-20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reporte: Resumen del Mes Actual",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}{{api_path}}/reports/current-month",
+					"host": [
+						"{{base_url}}{{api_path}}"
+					],
+					"path": [
+						"reports",
+						"current-month"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": ""
+		},
+		{
+			"key": "api_path",
+			"value": ""
+		}
+	]
+}
