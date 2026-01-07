@@ -1,4 +1,4 @@
-# Proyecto 2: Gestor de Gastos Personales 💰
+# Proyecto 3: Gestor de Gastos Personales 💰
 
 ## Objetivo
 Desarrollar un **sistema completo de gestión de gastos personales** utilizando **Spring Boot**, **JPA** y **REST API**, con funcionalidades avanzadas de filtrado y generación de reportes. Este proyecto incluye un CRUD completo, filtros por categoría, método de pago y rango de fechas, además de reportes estadísticos.  
